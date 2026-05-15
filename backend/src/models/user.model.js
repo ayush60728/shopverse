@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { useReducer } from "react";
+import bcrypt from "bcryptjs";
 
 const userSchema = new mongoose.Schema({
     email: {
@@ -25,7 +25,7 @@ const userSchema = new mongoose.Schema({
         enum: ["buyer", "seller"],
         default: "buyer"
     }
-})
+})  
 
 
 
@@ -37,7 +37,7 @@ userSchema.pre("save", async function () {
     this.password = hash;
 })
 
-userSchema.method.comparePassword = async function (password){
+userSchema.methods.comparePassword = async function (password){
     return await bcrypt.compare(password, this.password
     );
 }

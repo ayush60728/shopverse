@@ -5,11 +5,11 @@ import {config} from "../config/config.js"
 async function sendTokenResponse(user, res , message) {
     const token = jwt.sign({ 
         id: user._id,
-    },confirg.JWT_SECRET, {
+    },config.JWT_SECRET, {
         expiresIn: "7d"
     })
 
-    res.cookie("token", token, )
+    res.cookie("token", token)
 
     res.status(200).json({
         token,
@@ -49,4 +49,28 @@ export const register = async (req , res) => {
         console.log("Error occurred while registering user", error);
         res.status(500).json({ message: "Error occurred while registering user" });
     }
+}
+
+export const login = async (req, res) => {
+    const {email, password} = req.body;
+    const user = await userModel.findOne({email});
+
+    if (!user) {
+        return res.status(400).json({message: "Invalid email or password"});
+    }
+    
+    const isMatch = await user.comparePassword(password);
+    
+    if(!isMatch) {
+        return res.status(400).json ({ message: "invalid credentials"})
+    }
+
+    await sendTokenResponse(user, res, "user logged in successfully");
+}
+
+export const googleCallback = async (req,res) => {
+
+    console.log(req.user)
+    res.redirect("http://localhost:5173/")
+    
 }

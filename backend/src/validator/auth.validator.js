@@ -2,7 +2,7 @@ import { body , validationResult } from "express-validator"
 
 function validatorRegister(req, res, next){
     const errors = validationResult(req);
-    if(!error.isEmail()) {
+    if(!errors.isEmail()) {
         return res.status(400).json({ errors: errors.array() })
     }
     next();
@@ -19,6 +19,12 @@ export const validatorRegisterUser = [
     .isLength({min: 3}).withMessage("Fullname must be at least 3 characters long"),
 
 ]
+
+export const validateLoginUser = [
+    body("email").isEmail().withMessage("Invalid email format"),
+    body("password").notEmpty().withMessage("Password is required"),
+    validatorRegister
+]   
 
 
 
