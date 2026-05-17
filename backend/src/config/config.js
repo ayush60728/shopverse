@@ -13,7 +13,9 @@ if(!process.env.GOOGLE_CLIENT_ID) {
 if(!process.env.GOOGLE_CLIENT_SECRET) {
     throw new Error ("Google client secret is not defined")
 }
-
+if(!process.env.NODE_ENV) {
+    throw new Error ("Node environment is not defined")
+}   
 
 
 
@@ -22,7 +24,8 @@ export const config = {
     MONGO_URI: process.env.MONGO_URI,
     JWT_SECRET: process.env.JWT_SECRET,
     GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
-    GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET
+    GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
+    Node_ENV: process.env.NODE_ENV || "development"
 }
 
 
